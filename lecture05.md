@@ -219,7 +219,7 @@ ps -ef | grep unicorn | grep -v grep
 - ターゲットグループ作成  
 ![target](img05/target.png)  
 - セキュリティグループ作成  
-![unicorn](img05/security.png)  
+![security](img05/security.png)  
 - ロードバランサー作成  
 ![load](img05/load.png)  
 
@@ -269,6 +269,8 @@ aws s3 rm s3://tetsu-bucket/test/apple.png
 ![s3-check](img05/kouseizu.png)  
 
 ##### 感想  
-第5課題はかなり難易度が高く感じた。迷いながら調べながら何とかここまで出来た。
+第5課題はかなり難易度が高く感じた。  
+迷いながら調べながら何とかここまで出来た。  
 1か月半もかかってしまった。  
-構成図を書いて理解が深まった。構成図を書くことの重要性だとわかった。
+構成図を書いて理解が深まった。  
+構成図を書くことの重要性だとわかった。  
