@@ -112,7 +112,7 @@ bin/dev
 
 - インバウンドルールに3000ポートを追加  
 http://IPアドレス:3000/でアクセス
-![built-in](img05/built-in.png)  
+![built-in](./img05/built-in.png)  
 
 ````
 
@@ -149,7 +149,7 @@ sudo systemctl restart nginx
 - nginxが正常に動作していることを確認  
 sudo systemctl status nginx  
 http://パブリックIPv4アドレス/でアクセス  
-![nginx](img05/nginx.png)  
+![nginx](./img05/nginx.png)  
 
 ````
 
@@ -170,20 +170,20 @@ bundle exec unicorn_rails -c config/unicorn.rb -E development -D
 ps -ef | grep unicorn | grep -v grep  
 
 - http://パブリックIPv4アドレス/でアクセス  
-![unicorn](img05/unicorn.png)  
+![unicorn](./img05/unicorn.png)  
 
 ````
 
 ##### 4.ELBを追加  
 ````
 - ターゲットグループ作成  
-![target](img05/target.png)  
+![target](./img05/target.png)  
 
 - セキュリティグループ作成  
-![unicorn](img05/security.png)  
+![unicorn](./img05/security.png)  
 
 - ロードバランサー作成  
-![load](img05/load.png)  
+![load](./img05/load.png)  
 
 - config/environments/development.rbを編集  
 cd raisetech-live8-sample-app/config/environments  
@@ -191,17 +191,17 @@ vi development.rb
 config.host << "ELB(ALB)のDNS名"  
 - NginxとUnicornを再起動  
 - DNS名でアクセスしアプリケーションが起動するか確認  
-![dns](img05/dns.png)  
+![dns](./img05/dns.png)  
 
 ````
 
 ##### 5.S3追加  
 ````
 - バケットを作成
-![backet](img05/s3_backet.png)  
+![bucket](./img05/bucket.png)  
 
 - IAMロールを作成し、Amazon S3へのアクセスをEC2に割り当てる  
-![role](img05/role.png)  
+![role](./img05/role.png)  
 
 - config/storage.ymlの設定を変更
 vim storage.ymlの設定を変更
@@ -217,10 +217,10 @@ vim development.rb
 config.active.storage.service:amazon
 
 - アプリケーションへの画像アップロード
-![web-upload](img05/web-upload.png)  
+![web-upload](./img05/web-upload.png)  
 
 - S3から確認
-![s3-check](img05/s3-check.png)  
+![s3-check](./img05/s3-check.png)  
 
 
 - 削除
@@ -229,7 +229,7 @@ aws s3 rm s3://tetsu-bucket/test/apple.png
 ````
 
 ##### 6.構成図  
-![s3-check](img05/kouseizu.drawio)  
+![s3-check](img05/kouseizu.png)  
 
 ##### 感想  
 第5課題はかなり難易度が高く感じた。迷いながら調べながら何とかここまで出来た。
