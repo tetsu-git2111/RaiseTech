@@ -22,7 +22,7 @@
 ![ok-mail.png ](img06/ok-mail.png)  
 
 ## 3.コスト管理  
-- [見積り](https://calculator.aws/#/estimate?id=b8744aa5d69b54085c4f8d4802584cf43eef9c6d)  
+- [見積り](https://calculator.aws/#/estimate?id=8648a65f08eea0ddddb156a7bb9e83a1768f5659)  
 - 現在の利用状況  
 ![thismonth-bill](img06/thismonth-bill.png) 
 - 先月の利用状況  
