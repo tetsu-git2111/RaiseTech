@@ -1,0 +1,66 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: ALB Create
+
+Parameters: 
+# ------------------------------------------------------------#
+#  NameBase
+# ------------------------------------------------------------#
+  NameBase:
+    Description: this is base name.
+    Type: String
+    Default: lecture10
+
+Resources: 
+# ------------------------------------------------------------#
+#  ALB
+# ------------------------------------------------------------#
+  #ALB
+  InternetALB:
+    Type: AWS::ElasticLoadBalancingV2::LoadBalancer
+    Properties: 
+      IpAddressType: ipv4
+      Name: !Sub "${NameBase}-alb"
+      Type: application
+      Scheme: internet-facing
+      SecurityGroups:
+        - !ImportValue ALBSecurityGroup
+      Subnets: 
+        - !ImportValue PublicSubnet1a
+        - !ImportValue PublicSubnet1c
+      Tags: 
+        - Key: Name
+          Value: !Sub "${NameBase}-alb"
+  #Target Group
+  TargetGroup: 
+    Type: AWS::ElasticLoadBalancingV2::TargetGroup
+    Properties: 
+      VpcId: !ImportValue VPC 
+      Name: !Sub "${NameBase}-alb-tgp"
+      Protocol: HTTP
+      ProtocolVersion: HTTP1
+      Port: 80
+      TargetType: instance
+      HealthCheckProtocol: HTTP
+      HealthCheckPath: "/"
+      HealthCheckPort: "traffic-port"
+      HealthyThresholdCount: 5
+      UnhealthyThresholdCount: 2
+      HealthCheckTimeoutSeconds: 5
+      HealthCheckIntervalSeconds: 30
+      Matcher: 
+        HttpCode: 200
+      Tags: 
+        - Key: Name
+          Value: !Sub "${NameBase}-alb-tGroup"
+      Targets: 
+        - Id: !ImportValue EC2
+  #Listener
+  ALBListener: 
+    Type: AWS::ElasticLoadBalancingV2::Listener
+    Properties: 
+      DefaultActions: 
+        - TargetGroupArn: !Ref TargetGroup
+          Type: forward
+      LoadBalancerArn: !Ref InternetALB
+      Port: 80
+      Protocol: HTTP

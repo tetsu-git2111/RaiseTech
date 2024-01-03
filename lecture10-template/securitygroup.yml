@@ -1,0 +1,83 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: SecurityGroup Create
+
+Parameters: 
+#-------------------------------------------------------------------
+# Base Name
+#-------------------------------------------------------------------
+  Namebase:
+    Description: this is base name.
+    Type: String
+    Default: lecture10
+
+Resources: 
+#-------------------------------------------------------------------
+# EC2-seciritygroup
+#-------------------------------------------------------------------
+  EC2SecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupName: !Sub "${Namebase}-secgroup-ec2"
+      GroupDescription: EC2securitygroup
+      VpcId: !ImportValue VPC
+      # インバウンド設定
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          CidrIp: 0.0.0.0/0
+          FromPort: 22
+          ToPort: 22
+        - IpProtocol: tcp
+          CidrIp: 0.0.0.0/0
+          FromPort: 80
+          ToPort: 80
+        - IpProtocol: tcp
+          CidrIp: 0.0.0.0/0
+          FromPort: 3000
+          ToPort: 3000
+#-------------------------------------------------------------------
+# RDS-seciritygroup
+#-------------------------------------------------------------------
+  RDSSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties: 
+      GroupName: !Sub "${Namebase}-secgroup-RDS"
+      GroupDescription: RDSsecuritygroup
+      VpcId: !ImportValue VPC
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 3306
+          ToPort: 3306
+          SourceSecurityGroupId: !Ref EC2SecurityGroup
+#-------------------------------------------------------------------
+# ALB-seciritygroup
+#-------------------------------------------------------------------
+  ALBSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties: 
+      GroupName: !Sub "${Namebase}-secgroup-ALB"
+      GroupDescription: ALBsecuritygroup
+      VpcId: !ImportValue VPC
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          CidrIp: 0.0.0.0/0
+          FromPort: 80
+          ToPort: 80
+#-------------------------------------------------------------------
+# Outputs
+#-------------------------------------------------------------------
+Outputs:
+#EC2 Security Group
+  EC2SecurityGroup:
+    Value: !Ref EC2SecurityGroup
+    Export: 
+      Name: EC2SecurityGroup
+#RDS Security Group
+  RDSSecurityGroup:
+    Value: !Ref RDSSecurityGroup
+    Export: 
+      Name: RDSSecurityGroup
+#ALB Security Group
+  ALBSecurityGroup:
+    Value: !Ref ALBSecurityGroup
+    Export: 
+      Name: ALBSecurityGroup
