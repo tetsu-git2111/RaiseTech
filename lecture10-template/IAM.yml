@@ -30,27 +30,6 @@ Resources:
       Path: "/"
       ManagedPolicyArns:                    
         - arn:aws:iam::aws:policy/AmazonS3FullAccess
-  #AccessPolicies
-  AccessPolicies:
-    Type: AWS::IAM::Policy
-    Properties: 
-      PolicyName: !Sub "${NameBase}-access"
-      PolicyDocument:
-        Version: '2012-10-17'
-        Statement:
-        - Effect: Allow
-          Action:
-            - "s3:ListBucket"
-          Resource: 
-            - !Sub "arn:aws:s3:::${NameBase}"
-        - Effect: Allow
-          Action:
-              - "s3:PutObject"
-              - "s3:GetObject"
-              - "s3:DeleteObject"
-          Resource: !Sub "arn:aws:s3:::${NameBase}/*"
-      Roles:
-      - !Ref IAMRole
   #InstanceProfile
   InstanceProfile:
     Type: AWS::IAM::InstanceProfile
