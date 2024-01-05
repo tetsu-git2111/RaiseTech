@@ -1,0 +1,57 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: Ec2 Create
+
+Parameters: 
+# ------------------------------------------------------------#
+#  NameBase
+# ------------------------------------------------------------#
+  Namebase:
+    Description: this is base name.
+    Type: String
+    Default: lecture10
+
+  EC2ImageID:
+    Type: AWS::SSM::Parameter::Value<AWS::EC2::Image::Id>
+    Default: "/aws/service/ami-amazon-linux-latest/amzn2-ami-hvm-x86_64-gp2"
+
+Resources: 
+#-------------------------------------------------------------------
+# EC2
+#-------------------------------------------------------------------
+  #Key Pair
+  KeyPair:
+    Type: AWS::EC2::KeyPair
+    Properties:
+      KeyName: EC2KeyPair
+      KeyType: rsa
+  #EC2
+  EC2: 
+    Type: AWS::EC2::Instance
+    Properties: 
+      ImageId: !Ref EC2ImageID
+      KeyName: !Ref KeyPair
+      InstanceType: t2.micro
+      AvailabilityZone: ap-northeast-1a
+      NetworkInterfaces: 
+        - AssociatePublicIpAddress: "true"
+          DeviceIndex: "0"
+          SubnetId: !ImportValue PublicSubnet1a
+          GroupSet:
+            - !ImportValue EC2SecurityGroup
+      UserData: !Base64 |
+        #!/bin/bash
+        yum update -y
+      IamInstanceProfile:
+        !ImportValue InstanceProfile
+      Tags:
+          - Key: Name
+            Value: !Sub "${Namebase}-ec2"
+Outputs:
+#-------------------------------------------------------------------
+# Outputs
+#-------------------------------------------------------------------
+#EC2
+  EC2:
+    Value: !Ref EC2
+    Export: 
+      Name: EC2

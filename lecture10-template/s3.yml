@@ -1,0 +1,29 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: S3 Create
+
+Parameters: 
+# ------------------------------------------------------------#
+#  NameBase
+# ------------------------------------------------------------#
+  Namebase:
+    Description: this is base name.
+    Type: String
+    Default: lecture10
+
+Resources:
+# ------------------------------------------------------------#
+#  S3
+# ------------------------------------------------------------#
+  S3Bucket:
+    Type: AWS::S3::Bucket
+    Properties: 
+      AccessControl: Private
+      BucketName: !Sub "${Namebase}-s3-bucket"
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: true
+        BlockPublicPolicy: true
+        IgnorePublicAcls: true
+        RestrictPublicBuckets: true
+      Tags:
+        - Key: Env
+          Value: !Sub "${Namebase}-s3-bucket"
